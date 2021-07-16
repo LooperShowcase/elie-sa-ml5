@@ -4,6 +4,7 @@ let playerImage;
 let obstacleImage;
 let obstacles = [];
 let wordClassifier;
+let button;
 
 function preload() {
   bgImage = loadImage("bg.png");
@@ -19,6 +20,13 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   player = new Player();
   wordClassifier.classify(heardWord);
+}
+
+function restartGame() {
+  obstacles = [];
+  loop();
+  redraw();
+  button.remove();
 }
 
 function heardWord(errors, results) {
@@ -55,10 +63,14 @@ function draw() {
     obs.move();
 
     if (player.collided(obs) === true) {
-      noFill();
+      fill(0);
       stroke("red");
-      console.log("GAME OVER!!");
+      textSize(70);
+      text("GAME OVER!!", width / 2, height / 2 - 50);
       noLoop();
+      button = createButton("Restart");
+      button.position(width / 2, height / 2);
+      button.mousePressed(restartGame);
     }
   }
   player.show();
